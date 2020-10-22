@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
+                <li><a href="/requestAccount">Register</a></li>
             </ul>
         </nav>
 
@@ -23,6 +23,9 @@
                     Registration Form
                 </div>
                 <div class="card-body">
+                    {{#if message}}
+                        <h4 class="alert alert-danger mt-4">{{message}}</h4>
+                    {{/if}}
                     <form action="/auth/register" method="POST">
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -32,7 +35,7 @@
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" required>
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <small id="emailHelp" class="form-text text-muted">Use the email you recieved the link from.</small>
                         </div>
 
                         <div class="form-group">
@@ -53,10 +56,6 @@
                     </form>
                 </div>
             </div>
-
-            {{#if message}}
-                <h4 class="alert alert-danger mt-4">{{message}}</h4>
-            {{/if}}
         </div>
 
 

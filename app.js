@@ -5,9 +5,14 @@ const mysql = require("mysql");
 const dotenv = require('dotenv');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
+//environment variables
 dotenv.config({ path: './.env'});
+
 const app = express();
+
+
 
 const db = mysql.createConnection({
     //use ip adress for host when server is used
@@ -20,6 +25,15 @@ const db = mysql.createConnection({
 //set up public directory
 const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory));
+
+//session config
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 //Parse url-encoded bodies (sent by HTML forms)
 app.use(express.urlencoded({ extended: false }));
@@ -40,11 +54,20 @@ db.connect( (error) => {
     }
 })
 
+//session
+app.use(session({
+    'secret': process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+  })
+);
+
 //Define routes from routes folder
 app.use('/', require('./routes/pages'));
 
 //Define routes for authorization
-app.use('/auth', require('./routes/auth'))
+app.use('/auth', require('./routes/auth'));
 
 const PORT = process.env.PORT || 5000;
 

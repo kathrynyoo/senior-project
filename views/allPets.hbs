@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="/style.css">
+        <title>Pet Patrol</title>
+    </head>
+    <body>
+        <nav>
+            <h4>Pet Patrol</h4>
+            <ul>
+                <li><a href="/">Home</a></li>
+                {{#if loggedIn}}
+                <li><a href="/logout">Logout</a></li>
+                {{else}}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/requestAccount">Register</a></li>
+                {{/if}}
+                
+                
+            </ul>
+        </nav>
+
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <th scope="col">Animal ID</th>
+                    <th scope="col">At AAC?</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Looks Like</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Sex</th>
+                    <th scope="col">Age Estimate</th>
+                    <th scope="col">View Pet</th>
+                </thead>
+                <tbody>
+                    {{#each pets}}
+                        <tr>
+                            <td>{{this.animal_id}}</td>
+                            <td>{{this.at_aac}}</td>
+                            <td>{{this.type}}</td>
+                            <td>{{this.looks_like}}</td>
+                            <td>{{this.color}}</td>
+                            <td>{{this.sex}}</td>
+                            <td>{{this.age}}</td>
+                            <td><a class="btn btn-primary" href="{{this.image.url}}" role="button">View Pet</a></td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    </body>
+</html>
