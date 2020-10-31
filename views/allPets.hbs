@@ -12,19 +12,40 @@
             <h4>Pet Patrol</h4>
             <ul>
                 <li><a href="/">Home</a></li>
-                {{#if loggedIn}}
-                <li><a href="/logout">Logout</a></li>
-                {{else}}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/requestAccount">Register</a></li>
+                {{#if user}}
+                    <li><a href="/logout">Logout</a></li>
+                    {{#if isAdmin}}
+                        <li><a href="/adminHome">Admin Panel</a></li>
+                    {{/if}}
+                    {{else}}
+                        <li><a href="/requestAccount">Sign Up</a></li>
+                        <li><a href="/login">Login</a></li>
                 {{/if}}
-                
-                
             </ul>
         </nav>
 
         <div class="container">
-            <table class="table">
+            <div class="card-columns">
+                {{#each pets}}
+                    <div class="card">
+                        <div class="card-header">
+                            ID: {{this.animal_id}} <br>
+                            At AAC? {{this.at_aac}}
+                        </div>
+                        <div class="card-body">
+                            <p>Type: {{this.type}}</p>
+                            <p>Looks like: {{this.looks_like}}</p>
+                            <p>Color: {{this.color}}</p>
+                            <p>Sex: {{this.sex}}</p>
+                            <p>Age estimate: {{this.age}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-primary" href="{{this.image.url}}" role="button">View Pet</a>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+            {{!-- <table class="table">
                 <thead>
                     <th scope="col">Animal ID</th>
                     <th scope="col">At AAC?</th>
@@ -49,7 +70,7 @@
                         </tr>
                     {{/each}}
                 </tbody>
-            </table>
+            </table> --}}
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>

@@ -13,11 +13,16 @@ router.post('/login', authController.login)
 //delete a user from admin home page
 router.post('/deleteUser', authController.deleteUser)
 
-//prompt reverification from admin home page
-//router.post('/reverify', authController.reverifyUser)
-
 //request account
 router.post('/requestAccount', authController.requestAccount)
 
+//give admin status
+router.post('/makeAdmin', authController.makeAdmin)
+
+//remove admin status
+router.post('/noAdmin', authController.removeAdmin)
+
+//prompt reverification
+router.post('/reverify', authController.reverify)
 
 module.exports = router;

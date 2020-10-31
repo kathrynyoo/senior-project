@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const uuidv4 = require('uuid')
+const expressValidator = require('express-validator')
 
 //environment variables
 dotenv.config({ path: './.env'});
@@ -26,14 +28,6 @@ const db = mysql.createConnection({
 const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory));
 
-//session config
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: process.env.JWT_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}))
 
 //Parse url-encoded bodies (sent by HTML forms)
 app.use(express.urlencoded({ extended: false }));
@@ -41,6 +35,9 @@ app.use(express.urlencoded({ extended: false }));
 //Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 app.use(cookieParser());
+
+//Start and set up express validator
+//app.use(expressValidator());
 
 //set handlebars as view engine
 app.set('view engine', 'hbs');
@@ -56,10 +53,9 @@ db.connect( (error) => {
 
 //session
 app.use(session({
-    'secret': process.env.JWT_SECRET,
+    secret: process.env.JWT_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+    saveUninitialized: false
   })
 );
 
