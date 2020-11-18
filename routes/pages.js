@@ -55,6 +55,12 @@ router.get('/phoneVerify', authController.verifyPhone);
 //list all pets
 router.get('/allPets', authController.listAllPets);
 
+//search pets home page
+router.get('/search', (req, res) => {
+    res.render('search')
+})
+
+
 //logout user
 router.get('/logout', authController.logout);
 

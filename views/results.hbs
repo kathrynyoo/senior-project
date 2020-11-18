@@ -26,15 +26,37 @@
 
         <div class="container mt-4">
             <div class="jumbotron">
-                <h1 class="display-4">Pet Patrol</h1>
+                <h1 class="display-4">Search Results</h1>
                 <hr class="my-4">
-                <p>Choose What to do</p>
-                <a class="btn btn-primary btn-lg" href="/allPets" role="button">View All</a>
-                <a class="btn btn-primary btn-lg" href="/search" role="button">Search Lost Pets</a>
+                <a class="btn btn-primary btn-lg" href="/search" role="button">New Search</a>
             </div>
         </div>
 
-
+        <div class="container">
+            {{#if message}}
+                <h4 class="alert alert-danger mt-4">{{message}}</h4>
+            {{/if}}
+            <div class="card-columns">
+                {{#each pets}}
+                    <div class="card">
+                        <div class="card-header">
+                            ID: {{this.animal_id}} <br>
+                            At AAC? {{this.at_aac}}
+                        </div>
+                        <div class="card-body">
+                            <p>Type: {{this.type}}</p>
+                            <p>Looks like: {{this.looks_like}}</p>
+                            <p>Color: {{this.color}}</p>
+                            <p>Sex: {{this.sex}}</p>
+                            <p>Age estimate: {{this.age}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-primary" href="{{this.image.url}}" role="button">View Pet</a>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>
 </html>

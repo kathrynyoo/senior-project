@@ -25,4 +25,7 @@ router.post('/noAdmin', authController.removeAdmin)
 //prompt reverification
 router.post('/reverify', authController.reverify)
 
+//search pets form submission
+router.post('/search', authController.searchPets);
+
 module.exports = router;
