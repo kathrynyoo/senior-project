@@ -19,6 +19,11 @@ const db = mysql.createConnection({
     database: process.env.DATABASE
 });
 
+
+
+// ------------ ACCOUNT CREATION/INFO VERIFICATION ------------ 
+
+
 //User provides an email to send a verification link to
 //A row is made for the user in the EmailVerification table
 //Row contains an id, email, token, request type (0=new user, 1=reset password, 2=reverify), and the date created
@@ -131,6 +136,7 @@ exports.register = (req, res) => {
                         var phoneArray = phone.split("-");
                         var formattedPhone = "+1".concat(phoneArray[0]).concat(phoneArray[1]).concat(phoneArray[2]);
                         var link = process.env.SITE_URL
+                        //send text
                         client.messages
                             .create({
                                 body: 'Click this link and log in to verify your phone number. '+link+'/phoneVerify?token='+token,
@@ -154,106 +160,8 @@ exports.register = (req, res) => {
     });   
 }
 
-// Login Function
-exports.login = async (req, res) => {
-    try {
-       const {email, password} = req.body;
-
-       //check that email and password were both entered
-       if( !email || !password ) {
-           return res.status(400).render('login', {
-               message: 'Please provide an email and password.'
-           });
-       } 
-
-       //check email and password are valid
-       db.query('SELECT * FROM user WHERE email = ?', [email], async (error, results) => {
-           if( !results || !(await bcrypt.compare( password, results[0].pass_hash) ) ) {
-            return res.status(400).render('login', {
-                message: 'Email or password is incorrect.'
-            });
-           } else if (results.length === 0) {
-                return res.status(400).render('login', {
-                    message: 'Email or password is incorrect.'
-                });
-            } else {
-            const userName = results[0].name;
-            const userEmail = results[0]. email
-            const id = results[0].user_id;
-            
-            //Update user with new lastlogin date
-            db.query('UPDATE user SET lastLogin = CURRENT_TIMESTAMP WHERE user_id = ?', [id], (error, results) => {
-                if(error) {
-                    console.log(error);
-                }
-            })
- 
-            ///token and cookie stuff
-            const token = jwt.sign({ id: id }, process.env.JWT_SECRET , {
-                expiresIn: process.env.JWT_EXPIRES_IN
-            });
- 
-            const cookieOptions = {
-                expires: new Date(
-                    Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                ),
-                httpOnly: true
-            }
-
-            //set up cookie 
-            res.cookie('jwt', token, cookieOptions);
-
-            //session vars
-            var ssn = req.session;
-            ssn.email = userEmail;
-            ssn.user_id = id;
-            ssn.name = userName;
-            ssn.loggedIn = true;
-            req.session.save();
-            
-            res.status(200).redirect('/')
-        } 
-       })
-        
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-
-//list all users in table
-exports.listUsers = (req, res) => {
-    db.query('SELECT * FROM user',  function (error, results) {
-        if(error) {
-            console.log(error)
-        }
-        else if(!results) {
-            return res.status(400).render('adminHome', {
-                message: 'There are no users registered in the database.'
-            });
-        }
-        else {
-            return res.render('adminHome', {
-                users: results
-            });
-        } 
-    });
-}
-
-// delete user from database
-exports.deleteUser = (req, res) => {
-    var id = req.body.user_id;
-    db.query('DELETE FROM user WHERE user_id = ?', [id], (error, results) => {
-        if(error) {
-            console.log(error)
-        } else {
-            res.status(200).redirect('/adminHome');
-        }
-    })
-    
-}
-
-
+// User enters phone number on registration or info update page
+// A text is sent to the number provided with a verification link
 exports.verifyPhone = (req, res) => {
     //get token from url params
     var token = req.query.token;
@@ -285,6 +193,279 @@ exports.verifyPhone = (req, res) => {
 }
 
 
+// ------------ LOGIN AND LOGOUT ------------ 
+
+
+// Login Function
+exports.login = async (req, res) => {
+    try {
+       const {email, password} = req.body;
+
+       //check that email and password were both entered
+       if( !email || !password ) {
+           return res.status(400).render('login', {
+               message: 'Please provide an email and password.'
+           });
+       } 
+
+       //check email and password are valid
+       db.query('SELECT * FROM user WHERE email = ?', [email], async (error, results) => {
+           if( !results || !(await bcrypt.compare( password, results[0].pass_hash) ) ) {
+            return res.status(400).render('login', {
+                message: 'Email or password is incorrect.'
+            });
+           } else if (results.length === 0) {
+                return res.status(400).render('login', {
+                    message: 'Email or password is incorrect.'
+                });
+            } else {
+                //get variables to be used as session vars from the query results
+                const userName = results[0].name;
+                const userEmail = results[0]. email
+                const id = results[0].user_id;
+                const permissions = results[0].isAdmin === 0 ? false : true;
+                
+                //Update user with new lastlogin date
+                db.query('UPDATE user SET lastLogin = CURRENT_TIMESTAMP WHERE user_id = ?', [id], (error, results) => {
+                    if(error) {
+                        console.log(error);
+                    } else {
+                        sessionData = req.session;
+
+                        // token and cookie stuff
+                        const token = jwt.sign({ id: id }, process.env.JWT_SECRET , {
+                            expiresIn: process.env.JWT_EXPIRES_IN
+                        });
+        
+                        const cookieOptions = {
+                            expires: new Date(
+                                Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                            ),
+                            httpOnly: true
+                        }
+
+                        //set up cookie 
+                        res.cookie('jwt', token, cookieOptions);
+
+                        //session vars
+                        sessionData.userName = userName;
+                        sessionData.email = userEmail;
+                        sessionData.user_id = id;
+                        sessionData.permissions = permissions;
+
+                        res.redirect('/');
+                    }
+                })
+    
+            } 
+        })
+            
+        } catch (error) {
+            console.log(error);
+        }
+}
+
+
+//logout
+exports.logout = (req, res) => {
+    req.session.destroy(function(err) {
+        if(err) {
+          console.log(err);
+        } else {
+            res.status(200).redirect('/');
+        }
+      });
+}
+
+
+// ------------ USER DATA FUNCTIONS (LISTALL, DELETE, ETC.) ------------ 
+
+
+//list all users in table
+exports.listUsers = (req, res) => {
+    db.query('SELECT * FROM user',  function (error, results) {
+        if(error) {
+            console.log(error)
+        }
+        else if(!results) {
+            return res.render('adminHome', {
+                message: 'There are no users registered in the database.', users: results, user: req.session.userName, isAdmin: req.session.permissions
+            });
+        }
+        else {
+            //Handlebars helper to set isAdmin to true or false booleans
+            Handlebars.registerHelper('isAdmin', function (aStr) {
+                if (aStr !== 0) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            });
+            //Handlebars helper to check if 5 years has passed since a users last login
+            Handlebars.registerHelper('isExpired', function (date1) {
+                var dateNow = new Date();
+                var differenceInTime = dateNow.getTime() - date1.getTime();
+                var differenceInDays = differenceInTime / (1000 *3600 *24);
+                //check if difference in days is >= to 5 years (1825 days)
+                if(differenceInDays >= 1825) {
+                    return true
+                } else {
+                    return false
+                }
+            })
+            return res.render('adminHome', {
+                users: results, user: req.session.userName, isAdmin: req.session.permissions
+            });
+        } 
+    });
+}
+
+// delete user from database
+exports.deleteUser = (req, res) => {
+    var id = req.body.user_id;
+    db.query('DELETE FROM user WHERE user_id = ?', [id], (error, results) => {
+        if(error) {
+            console.log(error)
+        } else {
+            res.redirect('/adminHome');
+        }
+    })
+    
+}
+
+
+// ------------ ADMIN PAGE FUNCTIONS ------------
+
+
+//grant admin permissions for user
+exports.makeAdmin = (req, res) => {
+    var id = req.body.user_id;
+    //update user info and make isAdmin = 1 to represent 'true'
+    db.query('UPDATE user SET isAdmin = 1 WHERE user_id = ?', [id], (error, results) => {
+        if(error) {
+            console.log(error)
+        } else {
+            res.redirect('/adminHome');
+        }
+    })
+}
+
+//remove users admin permissions
+exports.removeAdmin = (req, res) => {
+    var id = req.body.user_id;
+    //update user info and make isAdmin = 0 to represent 'flase'
+    db.query('UPDATE user SET isAdmin = 0 WHERE user_id = ?', [id], (error, results) => {
+        if(error) {
+            console.log(error)
+        } else {
+            res.redirect('/adminHome');
+        }
+    })
+}
+
+//send reverification email and/or text to user
+exports.reverify = (req, res) => {
+    var id = req.body.user_id;
+    //get user info from database
+    db.query('SELECT * FROM user WHERE user_id = ?', [id], (error, results) => {
+        if(error) {
+            console.log(error)
+        } else if (results[0].phone) {
+            var phone = results[0].phone;
+            var email = results[0].email;
+
+            //make entered phone number into E.164 format
+            var phoneArray = phone.split("-");
+            var formattedPhone = "+1".concat(phoneArray[0]).concat(phoneArray[1]).concat(phoneArray[2]);
+            var link = process.env.SITE_URL
+            //send text notification
+            client.messages
+                .create({
+                    body: 'Your PetPatrol account is about to expire! Please login at the link provided if you want your account to remain activated. '+link+'/login',
+                    from: process.env.TWILIO_PHONE_NUMBER,
+                    to: formattedPhone
+                    })
+                    .then(message => console.log(message.sid));
+
+            //send email notification
+            var transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                service: 'gmail',
+                auth: {
+                  user: process.env.EMAIL,
+                  pass: process.env.EMAIL_PASSWORD
+                }
+              });
+              
+              var link = process.env.SITE_URL
+              var mailOptions = {
+                from: process.env.EMAIL,
+                to: email,
+                subject: "Your PetPatrol account is about to expire!",
+                html: `
+                    <h2>Your PetPatrol account is about to expire! Please login at the link provided if you want your account to remain activated.</h2>
+                    <a href="${link}/login">Click here!</a>
+                    `
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+
+              res.redirect('/adminHome')
+        } else {
+            var email = results[0].email;
+
+            //send email notification
+            var transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                service: 'gmail',
+                auth: {
+                  user: process.env.EMAIL,
+                  pass: process.env.EMAIL_PASSWORD
+                }
+              });
+              
+              var link = process.env.SITE_URL
+              var mailOptions = {
+                from: process.env.EMAIL,
+                to: email,
+                subject: "Your PetPatrol account is about to expire!",
+                html: `
+                    <h2>Your PetPatrol account is about to expire! Please login at the link provided if you want your account to remain activated.</h2>
+                    <a href="${link}/login">Click here!</a>
+                    `
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+
+              res.redirect('/adminHome')
+
+        }
+    })
+}
+
+
+
+
+// ------------ PET DATA FUNCTIONS ------------ 
+
+
 //get all pets from aac api
 exports.listAllPets = (req, res) => {
     if(req.session.name) {
@@ -297,7 +478,7 @@ exports.listAllPets = (req, res) => {
     consumer.query().withDataset('hye6-gvq2').getRows()
         .on('success', (rows) => {
         return res.render('allPets', {
-            pets: rows
+            pets: rows, user: req.session.userName, isAdmin: req.session.permissions
         })
         })
         .on('error', (error) => {
@@ -306,77 +487,6 @@ exports.listAllPets = (req, res) => {
 }
 
 
-//logout
-exports.logout = (req, res) => {
-    req.session.destroy(function(err) {
-        if(err) {
-          console.log(err);
-        } else {
-            res.status(200).render('index', {
-                loggedIn: false
-            });
-        }
-      });
-}
-//send reverification email/text to users
-// exports.reverifyUser = (req, res) => {
-//     var email = req.body.email;
 
-//     db.query('SELECT * FROM user WHERE email = ?', [email], (error, results) => {
-//         if(error) {
-//             console.log(error);
-//         } else {
-//             if(results[0].verification === 'email') {
-//                 //create token
-//                 const token = jwt.sign({ email}, process.env.JWT_SECRET , {
-//                     expiresIn: process.env.JWT_EXPIRES_IN
-//                 });
-
-//                 //inserting new row for into emailVarification table
-//                 db.query('INSERT INTO emailVerification SET ?', {email: email, token: token, requestType: 2}, (error, results) => {
-//                     if(error) {
-//                         console.log(error);
-//                     } else {
-//                         //sending the reverification email
-//                         var transporter = nodemailer.createTransport({
-//                             host: 'smtp.gmail.com',
-//                             port: 465,
-//                             secure: true,
-//                             service: 'gmail',
-//                             auth: {
-//                             user: 'noreply.petpatrol',
-//                             pass: 'pet!Patrol17'
-//                             }
-//                         });
-                            
-//                         var link = process.env.SITE_URL
-//                         var mailOptions = {
-//                             from: process.env.EMAIL,
-//                             to: email,
-//                             subject: "Reverify Email",
-//                             html: `
-//                                 <h2> Please click the link below and log in to reverify this email for your account.</h2>
-//                                 <a href="${link}/login?token=${token}">Click here!</a>
-//                             `
-//                         };
-                            
-//                         transporter.sendMail(mailOptions, function(error, info){
-//                             if (error) {
-//                                 console.log(error);
-//                             } else {
-//                                 console.log('Email sent: ' + info.response);
-//                             }
-//                         });
-//                         return res.render('adminHome', {
-//                             message: 'Reverification email sent.'
-//                         });
-//                         }
-//                     })
-                
-//             }
-
-//         }
-//     })
-
-// }
+// ------------ SEARCH DATA FUNCTIONS ------------ 
 

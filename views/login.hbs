@@ -12,8 +12,15 @@
             <h4>Login form</h4>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/requestAccount">Register</a></li>
+                {{#if user}}
+                    <li><a href="/logout">Logout</a></li>
+                    {{#if isAdmin}}
+                        <li><a href="/adminHome">Admin Panel</a></li>
+                    {{/if}}
+                    {{else}}
+                        <li><a href="/requestAccount">Sign Up</a></li>
+                        <li><a href="/login">Login</a></li>
+                {{/if}}
             </ul>
         </nav>
 

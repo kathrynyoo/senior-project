@@ -12,8 +12,15 @@
             <h4>Pet Patrol</h4>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/login">Sign Out</a></li>
-                <li><a href="/requestAccount">Register New Admin</a></li>
+                {{#if user}}
+                    <li><a href="/logout">Logout</a></li>
+                    {{#if isAdmin}}
+                        <li><a href="/adminHome">Admin Panel</a></li>
+                    {{/if}}
+                    {{else}}
+                        <li><a href="/requestAccount">Sign Up</a></li>
+                        <li><a href="/login">Login</a></li>
+                {{/if}}
             </ul>
         </nav>
 
@@ -40,17 +47,43 @@
                             <td>{{this.name}}</td>
                             <td>{{this.email}}</td>
                             <td>{{this.phone}}</td>
-                            <td>{{this.lastLogin}}</td>
+                            {{#if (isExpired this.lastLogin)}}
+                                <td style="color:red">{{this.lastLogin}}</td>
+                                {{else}}
+                                    <td>{{this.lastLogin}}</td>
+                            {{/if}}
                             <td>{{this.verification}}</td>
+                            {{#if (isAdmin this.isAdmin)}}
+                                <td>
+                                    <form action="/auth/noAdmin" method="POST">
+                                    <input type="hidden" name="user_id" value="{{this.user_id}}">
+                                    <input type="submit" value="Remove Admin Status">
+                                    </form>
+                                </td>
+                                {{else}}
+                                <td>
+                                    <form action="/auth/makeAdmin" method="POST">
+                                    <input type="hidden" name="user_id" value="{{this.user_id}}">
+                                    <input type="submit" value="Grant Admin Status">
+                                    </form>
+                                </td>
+                            {{/if}}
                             <td>
                                 <form action="/auth/deleteUser" method="POST">
                                     <input type="hidden" name="user_id" value="{{this.user_id}}">
                                     <input type="submit" value="Delete User">
                                 </form>
+                                {{#if (isExpired this.lastLogin)}}
                                 <form action="/auth/reverify" method="POST">
-                                    <input type="hidden" name="email" value="{{this.email}}">
+                                    <input type="hidden" name="user_id" value="{{this.user_id}}">
+                                    <input type="submit" value="Prompt Reverification" style="background-color: red;">
+                                </form>
+                                {{else}}
+                                <form action="/auth/reverify" method="POST">
+                                    <input type="hidden" name="user_id" value="{{this.user_id}}">
                                     <input type="submit" value="Prompt Reverification">
-                                </form>                                
+                                </form>
+                                {{/if}}                                
                             </td>
                         </tr>
                     {{/each}}
