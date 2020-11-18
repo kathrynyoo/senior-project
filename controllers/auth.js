@@ -466,11 +466,8 @@ exports.reverify = (req, res) => {
 // ------------ PET DATA FUNCTIONS ------------ 
 
 
-//get all pets from aac api
+//get all pets from aac database
 exports.listAllPets = (req, res) => {
-    if(req.session.name) {
-        console.log(req.session.name)
-    }
     
     var consumer = new soda.Consumer('data.austintexas.gov');
 
@@ -483,6 +480,116 @@ exports.listAllPets = (req, res) => {
         })
         .on('error', (error) => {
             console.log(error)
+        })
+}
+
+//search the pets in aac database based on criteria posted from search form
+exports.searchPets = (req, res) => {
+    //getting posted variable
+    var formSex = req.body.sex;
+    var formColor = req.body.color;
+    var formType = req.body.type;
+    var formBreed = req.body.breed;
+    var formAge = req.body.age;
+
+
+    // Age query expressions
+    if(formAge === "0 to 11 months") {
+        var age = "age like '%weeks' or age like '%month%' or age like 'NULL'";
+    } else if (formAge === "1 year to 4 years") {
+        var age = "age like '1 year' or age like '2 years' or age like '3 years' or age like '4 years' or age like 'NULL'";
+    } else if (formAge === "5 years to 9 years") {
+        var age = "age like '5 year' or age like '6 years' or age like '7 years' or age like '8 years' or age like '9 years' or age like 'NULL'";
+    } else if (formAge === "10+ years") {
+        var age = "age like '1% years' or age like 'NULL'";
+    } else if (formAge === "Choose...") {
+        var age = "age like '%'";
+    }
+
+    // Sex query expressions
+    if(formSex === "Intact Female") {
+        var sex = "sex like 'Intact Female'";
+    } else if(formSex === "Spayed Female") {
+        var sex = "sex like 'Spayed Female'";
+    } else if(formSex === "Intact Male") {
+        var sex = "sex like 'Intact Male'";
+    } else if(formSex === "Neutered Male") {
+        var sex = "sex like 'Neutered Male'";
+    } else if(formSex === "Unknown" || formSex === "Choose...") {
+        var sex = "sex like '%'";
+    }
+    
+    // Type query expressions
+    if(formType === "Dog") {
+        var type = "type like 'Dog'";
+    } else if(formType === "Cat") {
+        var type = "type like 'Cat'";
+    } else if(formType === "Other") {
+        var type = "type like 'Other'";
+    } else if(formType === "Choose...") {
+        var type = "type like '%'";
+    }
+
+
+    // Color query expressions
+    if(!Array.isArray(formColor)){
+        if (typeof formColor === 'undefined') {
+            var color = "color like '%'";
+        } else {
+            var color = `color like '%${formColor}%'`;
+        }
+    } else {
+        var i;
+        var color = "";
+        for (i = 0; i < formColor.length; i++) {
+            if (i === 0) {
+                var str = `color like '%${formColor[i]}%'`;
+                var color = color.concat(str);
+            } else {
+                var str = ` or color like '%${formColor[i]}%'`;
+                var color = color.concat(str);
+            }
+        }
+    }
+
+    // Breed query expressions
+    if(!Array.isArray(formBreed)){
+        if (typeof formBreed === 'undefined') {
+            var looks_like = "looks_like like '%'";
+        } else {
+            var looks_like = `looks_like like '%${formBreed}%'`;
+        }
+    } else {
+        var i;
+        var looks_like = "";
+        for (i = 0; i < formBreed.length; i++) {
+            if (i === 0) {
+                var str = `looks_like like '%${formBreed[i]}%'`;
+                var looks_like = looks_like.concat(str);
+            } else {
+                var str = ` or looks_like like '%${formBreed[i]}%'`;
+                var looks_like = looks_like.concat(str);
+            }
+        }
+    }
+
+    var consumer = new soda.Consumer('data.austintexas.gov');
+
+    //query soda api
+    consumer.query()
+        .withDataset('hye6-gvq2')
+        //Currently just getting pit bulls for testing purposes
+        .where(age, sex, type, color, looks_like)
+        .getRows()
+        .on('success', (rows) => {
+        return res.render('results', {
+            pets: rows, user: req.session.userName, isAdmin: req.session.permissions
+        })
+        })
+        .on('error', (error) => {
+            return res.render('results', {
+                message: "No pets were found matching the description proveide. Try widening the search criteria for color(s) and or breed(s) to get more results."
+            })
         })
 }
 
