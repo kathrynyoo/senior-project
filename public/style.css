@@ -30,3 +30,20 @@ nav li a:hover {
     color: yellow;
     text-decoration: none;
 }
+
+/* Secondary Navbar */
+nav1 {
+    background-color: #000000;
+    color: #fff;
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Navbar link text */
+nav1 li a {
+    color: #OOOOOO;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 8px;
+}

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="/style.css">
         <title>Pet Patrol</title>
     </head>
@@ -11,7 +12,6 @@
         <nav>
             <h4>Pet Patrol</h4>
             <ul>
-                <li><a href="/">Home</a></li>
                 {{#if user}}
                     <li><a href="/logout">Logout</a></li>
                     {{#if isAdmin}}
@@ -24,13 +24,22 @@
             </ul>
         </nav>
 
+        <nav1 class="navbar navbar-expand-sm bg-light justify-content-center">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="/allPets">View All Pets</a></li>
+            <li class="nav-item"><a class="nav-link" href="/search">Search Lost Pet</a></li>
+
+
+
+          </ul>
+        </nav1>
+
         <div class="container mt-4">
             <div class="jumbotron">
-                <h1 class="display-4">Pet Patrol</h1>
+                <h2 class="display-4">Pet Patrol's Mission Statement</h2>
                 <hr class="my-4">
-                <p>Choose What to do</p>
-                <a class="btn btn-primary btn-lg" href="/allPets" role="button">View All</a>
-                <a class="btn btn-primary btn-lg" href="/search" role="button">Search Lost Pets</a>
             </div>
         </div>
 

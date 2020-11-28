@@ -42,6 +42,7 @@ app.use(cookieParser());
 //set handlebars as view engine
 app.set('view engine', 'hbs');
 
+// Checks if connected to mysql database
 db.connect( (error) => {
     if(error) {
         console.log(error);

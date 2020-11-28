@@ -9,7 +9,7 @@
     </head>
     <body>
         <nav>
-            <h4>Pet Patrol</h4>
+            <h4>Pet Patrol </h4>
             <ul>
                 <li><a href="/">Home</a></li>
                 {{#if user}}
@@ -24,181 +24,183 @@
             </ul>
         </nav>
 
-        <div class="container">
-            <h2>Search the Austin Animal Center's found pets data</h2>
-            <h5>Note: Information entered for found pets is just the best estimate from AAC employees. For fields with multiple options it may be best to select any that may apply to your pet.</h5>
-            <br>
-            <form action="/auth/search" method="POST">
-                <div class="form-row">
-                    <!-- Type Options -->
-                    <div class="form-group col-md-4">
-                        <label for="type">Animal Type</label>
-                        <select class="form-control" id="type" name="type">
-                            <option selected>Choose...</option>
-                            <option>Dog</option>
-                            <option>Cat</option>
-                            <option>Other</option>
-                        </select>
+        <div class="container mt-4">
+            <div class="jumbotron">
+                <h2>Search the Austin Animal Center's found pets data</h2>
+                <h5>Note: Information entered for found pets is just the best estimate from AAC employees. For fields with multiple options it may be best to select any that may apply to your pet.</h5>
+                <br>
+                <form action="/auth/search" method="POST">
+                    <div class="form-row">
+                        <!-- Type Options -->
+                        <div class="form-group col-md-4">
+                            <label for="type">Animal Type</label>
+                            <select class="form-control" id="type" name="type">
+                                <option selected>Choose...</option>
+                                <option>Dog</option>
+                                <option>Cat</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <!-- Sex Options -->
+                        <div class="form-group col-md-4">
+                            <label for="sex">Sex</label>
+                            <select class="form-control" id="sex" name="sex">
+                                <option selected>Choose...</option>
+                                <option>Intact Female</option>
+                                <option>Spayed Female</option>
+                                <option>Intact Male</option>
+                                <option>Neutered Male</option>
+                                <option>Unknown</option>
+                            </select>
+                        </div>
+                        <!-- Age Options -->
+                        <div class="form-group col-md-4">
+                            <label for="age">Select estimated age</label>
+                            <select class="form-control" id="age" name="age">
+                                <option selected>Choose...</option>
+                                <option>0 to 11 months</option>
+                                <option>1 year to 4 years</option>
+                                <option>5 years to 9 years</option>
+                                <option>10+ years</option>
+                            </select>
+                        </div>
                     </div>
-                    <!-- Sex Options -->
-                    <div class="form-group col-md-4">
-                        <label for="sex">Sex</label>
-                        <select class="form-control" id="sex" name="sex">
-                            <option selected>Choose...</option>
-                            <option>Intact Female</option>
-                            <option>Spayed Female</option>
-                            <option>Intact Male</option>
-                            <option>Neutered Male</option>
-                            <option>Unknown</option>
-                        </select>
-                    </div>
-                    <!-- Age Options -->
-                    <div class="form-group col-md-4">
-                        <label for="age">Age - Select the estimated age</label>
-                        <select class="form-control" id="age" name="age">
-                            <option selected>Choose...</option>
-                            <option>0 to 11 months</option>
-                            <option>1 year to 4 years</option>
-                            <option>5 years to 9 years</option>
-                            <option>10+ years</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <!-- Color Options -->
-                    <div class="form-group col-md-4">
-                        <label for="color">Color(s) - Select all that may apply.</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Black" name="color">
-                            <label class="form-check-label" for="color">Black</label>
+                    <div class="form-row">
+                        <!-- Color Options -->
+                        <div class="form-group col-md-4">
+                            <label for="color">Color(s)-Select all that may apply.</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Black" name="color">
+                                <label class="form-check-label" for="color">Black</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="White" name="color">
+                                <label class="form-check-label" for="color">White</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Gray" name="color">
+                                <label class="form-check-label" for="color">Gray</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Brown" name="color">
+                                <label class="form-check-label" for="color">Brown</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Tan" name="color">
+                                <label class="form-check-label" for="color">Tan</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Cream" name="color">
+                                <label class="form-check-label" for="color">Cream</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Orange" name="color">
+                                <label class="form-check-label" for="color">Orange</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Yellow" name="color">
+                                <label class="form-check-label" for="color">Yellow</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Blue" name="color">
+                                <label class="form-check-label" for="color">Blue</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Red" name="color">
+                                <label class="form-check-label" for="color">Red</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Chocolate" name="color">
+                                <label class="form-check-label" for="color">Chocolate</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Gold" name="color">
+                                <label class="form-check-label" for="color">Gold</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Brindle" name="color">
+                                <label class="form-check-label" for="color">Brindle</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Tortie" name="color">
+                                <label class="form-check-label" for="color">Tortie</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Tabby" name="color">
+                                <label class="form-check-label" for="color">Tabby</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Tricolor" name="color">
+                                <label class="form-check-label" for="color">Tricolor</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Calico" name="color">
+                                <label class="form-check-label" for="color">Calico</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="color" value="Buff" name="color">
+                                <label class="form-check-label" for="color">Buff</label>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="White" name="color">
-                            <label class="form-check-label" for="color">White</label>
+
+                        <!-- Breed Options -->
+                        <div class="form-group col-md-4">
+                            <label for="breed">Breed(s)-Select all that may apply.</label>
+                            <!-- Cat Breeds -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Pit Bull" name="breed">
+                                <label class="form-check-label" for="breed">Pit Bull</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Labrador" name="breed">
+                                <label class="form-check-label" for="breed">Labrador</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Australian Cattle Dog" name="breed">
+                                <label class="form-check-label" for="breed">Austrailian Cattle Dog</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Chihuahua" name="breed">
+                                <label class="form-check-label" for="breed">Chihuahua</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="German Shepherd" name="breed">
+                                <label class="form-check-label" for="breed">German Shepherd</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Pug" name="breed">
+                                <label class="form-check-label" for="breed">Pug</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Husky" name="breed">
+                                <label class="form-check-label" for="breed">Husky</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Poodle" name="breed">
+                                <label class="form-check-label" for="breed">Poodle</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Yorkshire Terrier" name="breed">
+                                <label class="form-check-label" for="breed">Yorkshire Terrier</label>
+                            </div>
+                            <!-- Cat Breeds -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Domestic Shorthair" name="breed">
+                                <label class="form-check-label" for="breed">Domestic Shorthair (Cat)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="breed" value="Domestic Longhair" name="breed">
+                                <label class="form-check-label" for="breed">Domestic Longhair (Cat)</label>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Gray" name="color">
-                            <label class="form-check-label" for="color">Gray</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Brown" name="color">
-                            <label class="form-check-label" for="color">Brown</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Tan" name="color">
-                            <label class="form-check-label" for="color">Tan</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Cream" name="color">
-                            <label class="form-check-label" for="color">Cream</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Orange" name="color">
-                            <label class="form-check-label" for="color">Orange</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Yellow" name="color">
-                            <label class="form-check-label" for="color">Yellow</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Blue" name="color">
-                            <label class="form-check-label" for="color">Blue</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Red" name="color">
-                            <label class="form-check-label" for="color">Red</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Chocolate" name="color">
-                            <label class="form-check-label" for="color">Chocolate</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Gold" name="color">
-                            <label class="form-check-label" for="color">Gold</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Brindle" name="color">
-                            <label class="form-check-label" for="color">Brindle</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Tortie" name="color">
-                            <label class="form-check-label" for="color">Tortie</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Tabby" name="color">
-                            <label class="form-check-label" for="color">Tabby</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Tricolor" name="color">
-                            <label class="form-check-label" for="color">Tricolor</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Calico" name="color">
-                            <label class="form-check-label" for="color">Calico</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="color" value="Buff" name="color">
-                            <label class="form-check-label" for="color">Buff</label>
-                        </div>
+
                     </div>
 
-                    <!-- Breed Options -->
-                    <div class="form-group col-md-4">
-                        <label for="breed">Breed(s) - Select all that may apply.</label>
-                        <!-- Cat Breeds -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Pit Bull" name="breed">
-                            <label class="form-check-label" for="breed">Pit Bull</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Labrador" name="breed">
-                            <label class="form-check-label" for="breed">Labrador</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Australian Cattle Dog" name="breed">
-                            <label class="form-check-label" for="breed">Austrailian Cattle Dog</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Chihuahua" name="breed">
-                            <label class="form-check-label" for="breed">Chihuahua</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="German Shepherd" name="breed">
-                            <label class="form-check-label" for="breed">German Shepherd</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Pug" name="breed">
-                            <label class="form-check-label" for="breed">Pug</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Husky" name="breed">
-                            <label class="form-check-label" for="breed">Husky</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Poodle" name="breed">
-                            <label class="form-check-label" for="breed">Poodle</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Yorkshire Terrier" name="breed">
-                            <label class="form-check-label" for="breed">Yorkshire Terrier</label>
-                        </div>
-                        <!-- Cat Breeds -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Domestic Shorthair" name="breed">
-                            <label class="form-check-label" for="breed">Domestic Shorthair (Cat)</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="breed" value="Domestic Longhair" name="breed">
-                            <label class="form-check-label" for="breed">Domestic Longhair (Cat)</label>
-                        </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </div>
-                    
-                </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>
