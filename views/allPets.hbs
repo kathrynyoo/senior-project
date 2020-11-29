@@ -9,14 +9,13 @@
     </head>
     <body>
         <nav>
-            <h4>Pet Patrol</h4>
+            <a href="/"><h2>Pet Patrol</h2></a>
             <ul>
-                <li><a href="/">Home</a></li>
                 {{#if user}}
-                    <li><a href="/logout">Logout</a></li>
                     {{#if isAdmin}}
                         <li><a href="/adminHome">Admin Panel</a></li>
                     {{/if}}
+                    <li><a href="/logout">Logout</a></li>
                     {{else}}
                         <li><a href="/requestAccount">Sign Up</a></li>
                         <li><a href="/login">Login</a></li>
@@ -24,7 +23,16 @@
             </ul>
         </nav>
 
-        <div class="container">
+        <nav1 class="navbar navbar-expand-sm justify-content-center">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="/aboutUs">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="/resources">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="/allPets">View All Pets</a></li>
+            <li class="nav-item"><a class="nav-link" href="/search">Search Lost Pet</a></li>
+          </ul>
+        </nav1>
+
+        <div class="container mt-4">
             <div class="card-columns">
                 {{#each pets}}
                     <div class="card">
@@ -38,9 +46,8 @@
                             <p>Color: {{this.color}}</p>
                             <p>Sex: {{this.sex}}</p>
                             <p>Age estimate: {{this.age}}</p>
-                        </div>
-                        <div class="card-footer">
-                            <a class="btn btn-primary" href="{{this.image.url}}" role="button">View Pet</a>
+                            <a class="button" href="{{this.image.url}}" role="button"><p style="text-align:center">View Pet</p></a>
+
                         </div>
                     </div>
                 {{/each}}

@@ -112,7 +112,6 @@ exports.register = (req, res) => {
 
         //hash password w/ 8 rounds of encryption
         let hashedPassword = await bcrypt.hash(password, 8);
-        console.log(hashedPassword);
 
         //Check if the user entered a phone number
         insertPhone = {name: name, email: email, phone: phone, pass_hash: hashedPassword, verification: 'email'};
@@ -573,6 +572,9 @@ exports.searchPets = (req, res) => {
         }
     }
 
+    //put search expressions into array
+    var search = [age, sex, type, color, looks_like];
+
     var consumer = new soda.Consumer('data.austintexas.gov');
 
     //query soda api
@@ -582,13 +584,20 @@ exports.searchPets = (req, res) => {
         .where(age, sex, type, color, looks_like)
         .getRows()
         .on('success', (rows) => {
-        return res.render('results', {
-            pets: rows, user: req.session.userName, isAdmin: req.session.permissions
-        })
+            if (rows.length === 0) {
+                return res.render('results', {
+                    message: "No pets were found matching the description provided. Try widening the search criteria for color(s) and or breed(s) to get more results."
+                }) 
+            } else {
+                return res.render('results', {
+                    pets: rows, user: req.session.userName, isAdmin: req.session.permissions, results: rows.length, search: search
+                })
+            }
+        
         })
         .on('error', (error) => {
             return res.render('results', {
-                message: "No pets were found matching the description proveide. Try widening the search criteria for color(s) and or breed(s) to get more results."
+                message: "No pets were found matching the description provided. Try widening the search criteria for color(s) and or breed(s) to get more results."
             })
         })
 }

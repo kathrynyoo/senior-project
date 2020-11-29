@@ -1,10 +1,20 @@
 /* Navbar */
 nav {
-    background-color: #563d7c;
-    color: #fff;
+    background-color: #00ccc9;
+    color: #ffffea;
     padding: 30px 60px;
     display: flex;
     justify-content: space-between;
+    min-height: 30px;
+}
+
+nav a {
+    color: #ffffea;
+}
+
+nav a:hover {
+    color: #ffffea;
+    text-decoration: none;
 }
 
 nav ul {
@@ -19,7 +29,7 @@ nav li {
 
 /* Navbar link text */
 nav li a {
-    color: #fff;
+    color: #ffffea;
     text-decoration: none;
     font-weight: bold;
     padding: 5px 8px;
@@ -27,23 +37,97 @@ nav li a {
 
 /* Navbar link text on hover */
 nav li a:hover {
-    color: yellow;
+    color: #ff5e5b;
     text-decoration: none;
 }
 
 /* Secondary Navbar */
 nav1 {
-    background-color: #000000;
-    color: #fff;
-    padding: 30px 60px;
+    background-color: #00cecb;
+    color: #00cecb;
+    padding: 5px 5px;
     display: flex;
     justify-content: space-between;
+    min-height: 30px;
 }
 
 /* Navbar link text */
 nav1 li a {
-    color: #OOOOOO;
+    color: #ffffea;
     text-decoration: none;
     font-weight: bold;
-    padding: 5px 8px;
+    padding: 1px 1px;
+    font-size: 20px;
+}
+
+nav1 li a:hover {
+    color: #ff5e5b;
+    text-decoration: none;
+}
+
+.jumbotron {
+    background-color: #ffffea;
+}
+
+.jumbotron h2, h5 {
+    color: #1d3149;
+}
+
+.jumbotrom p {
+    color: #1d3149;
+}
+
+.container {
+    background-color: #ffffea;
+}
+
+body {
+    background-color: #ffffea;
+}
+
+.card-header{
+    background-color: #00ccc9;
+    color: #1d3149;
+}
+
+.card-body {
+    background-color: #d6fffe;
+    color: #1d3149;
+}
+
+.card-body a{ 
+    color: #ff5e5b;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #00cecb;
+    color: #ffffff;
+    text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 20px 20px;
+}
+
+.styled-table tbody tr {
+    background-color: #d6fffe;
+    border-bottom: 1px solid #dddddd;
+    text-align: center;
+    color: #1d3149
+}
+
+
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #00cecb;
 }
