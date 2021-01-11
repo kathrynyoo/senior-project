@@ -12,10 +12,11 @@
             <a href="/"><h2>Pet Patrol</h2></a>
             <ul>
                 {{#if user}}
+                    <li><a href="/logout">Logout</a></li>
                     {{#if isAdmin}}
                         <li><a href="/adminHome">Admin Panel</a></li>
                     {{/if}}
-                    <li><a href="/logout">Logout</a></li>
+                    
                     {{else}}
                         <li><a href="/requestAccount">Sign Up</a></li>
                         <li><a href="/login">Login</a></li>
