@@ -53,17 +53,35 @@ router.get('/allPets', authController.listAllPets);
 
 //search pets home page
 router.get('/search', (req, res) => {
-    res.render('search')
+    if(!req.session.userName) {
+        res.render('search');
+    } else {
+        res.render('search', {
+            user: req.session.userName, isAdmin: req.session.permissions
+        });
+    }
 })
 
 //about us page
 router.get('/aboutUs', (req, res) => {
-    res.render('aboutUs')
+    if(!req.session.userName) {
+        res.render('aboutUs');
+    } else {
+        res.render('aboutUs', {
+            user: req.session.userName, isAdmin: req.session.permissions
+        });
+    }
 })
 
 //resources page
 router.get('/resources', (req, res) => {
-    res.render('resources')
+    if(!req.session.userName) {
+        res.render('resources');
+    } else {
+        res.render('resources', {
+            user: req.session.userName, isAdmin: req.session.permissions
+        });
+    }
 })
 
 //logout user
