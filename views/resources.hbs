@@ -5,14 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lobster" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
         <link rel="stylesheet" href="/style.css">
         <title>Pet Patrol</title>
         <link rel="shortcut icon" type="image/png" href="images/dog-paw.png" />
 
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#myScrollspy" data-offset="1">
         <nav>
-            <a href="/"><h2>Pet Patrol</h2></a>
+            <a href="/"><h1>Pet Patrol</h1></a>
             <ul>
                 {{#if user}}
                     {{#if isAdmin}}
@@ -35,13 +39,64 @@
           </ul>
         </nav1>
 
-        <div class="container mt-4 text-center">
-            <div class="jumbotron">
-                <h2 class="display-4">Resources</h2>
-                <hr class="my-4">
-                <p class="text-left">Resources</p>
-            </div>     
+
+
+        <br/>
+
+        <div class="container-fluid">
+          <div class="row">
+            <nav class="col-sm-3 col-4" id="myScrollspy">
+              <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><br/><br/><br/>
+                  <a class="nav-link" href="#section1">Recommendations</a>
+                </li><br/>
+                <li class="nav-item">
+                  <a class="nav-link" href="#section2">Contact Info</a>
+                </li><br/>
+                <li class="nav-item">
+                  <a class="nav-link" href="#section3">Other</a>
+                </li>
+              </ul>
+            </nav>
+            <div class="col-sm-9 col-8">
+                <div id="section1" class="bg-light">
+                    <br/>
+                    <h2> Resources </h2>
+                    <p>Learn more about what you can do to find your pet</p>
+                    <hr class="my-2"> <!-- line separating text -->
+                    <h4>Recommendations</h4>
+                    <p> While you wait to receive news of your pet from us, here are some recommendations given by The Humane Society of THE UNITED STATES in their article, "What to do if you lose your pet". </p>
+                    <p> #1 - Contact local shelters and animal control agencies</p>
+                    <p> #2 - Search the neighborhood</p>
+                    <p> #3 - Advertise</p>
+                    <p> #4 - Be wary of pet-recovery scams</p>
+                    <p> #5 - Don't give up your search</p>
+                    <a href="https://www.humanesociety.org/resources/what-do-if-you-lose-your-pet#:~:text=File%20a%20lost%20pet%20report,contact%20the%20local%20police%20department."> To read the full article from The Humane Society of THE UNITED STATES, click here </a>
+
+                </div>
+
+                <div id="section2" class="bg-light">
+                    <h4>Austin Animal Center's Contact Info</h4>
+                    <p> If you find a pet, call 3-1-1 to report it to the City of Austin.</p>
+                    <br/><br/>
+                    <p style="font-weight: bold;"> Austin Animal Center Physical Address:</p>
+                    <p> Austin Animal Center</p>
+                    <p>7201 Levander Loop Bldg. A </p>
+                    <p>Austin, TX 78702</p>
+                    <a href="https://www.google.com/maps/place/Austin+Animal+Center/@30.2514089,-97.691671,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b514250ca045:0x3814e2926e60ba70!8m2!3d30.2514089!4d-97.6894823">Google Maps</a>
+
+                </div>
+                <div id="section3" class="bg-light">
+                    <h4>Other Resources you should look into:</h4>
+                    <a href="https://www.austintexas.gov/department/lost-found-pet">Austin Animal Center Lost and Found Site</a>
+                    <br/>
+                    <a href="https://www.austintexas.gov/department/austin-animal-center-services">Austin Animal Center Services/Resources Site</a>
+                </div>
+            </div>
+          </div>
         </div>
+
+
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>
 </html>

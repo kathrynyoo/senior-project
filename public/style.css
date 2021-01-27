@@ -83,7 +83,27 @@ nav1 li a:hover {
 
 body {
     background-color: #ffffea;
+    position: relative;
+
 }
+
+#section2, #section1, #section3 {
+    text-align:center;
+}
+
+body h1 {
+    font-family:Lobster;
+
+}
+
+ul.nav-pills {
+    top: 20px;
+    position: absolute;
+  }
+
+div.col-8 div {
+    height: 500px;
+  }
 
 .card-header{
     background-color: #00ccc9;
