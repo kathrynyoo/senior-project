@@ -33,6 +33,7 @@ nav li a {
     text-decoration: none;
     font-weight: bold;
     padding: 5px 8px;
+    font-family:  Georgia, serif;
 }
 
 /* Navbar link text on hover */
@@ -58,6 +59,7 @@ nav1 li a {
     font-weight: bold;
     padding: 1px 1px;
     font-size: 20px;
+    font-family:  Georgia, serif;
 }
 
 nav1 li a:hover {
@@ -87,6 +89,15 @@ body {
 
 }
 
+p1{
+    font-family: "Fauna One", "serif";
+}
+
+h3{
+      font-family: "Cinzel", "serif";
+}
+
+
 #section2, #section1, #section3 {
     text-align:center;
 }
@@ -95,6 +106,7 @@ body h1 {
     font-family:Lobster;
 
 }
+
 
 ul.nav-pills {
     top: 20px;
@@ -146,7 +158,11 @@ div.col-8 div {
     color: #1d3149
 }
 
+.carousel-inner img {
+    width: 80%;
+    height: 100%;
 
+}
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #00cecb;
