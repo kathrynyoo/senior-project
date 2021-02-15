@@ -159,8 +159,14 @@ div.col-8 div {
 }
 
 .carousel-inner img {
-    width: 80%;
-    height: 100%;
+    width: 50%;
+    height: 60%;
+
+}
+
+.image-size img {
+    width: 20%;
+    height: 20%;
 
 }
 
