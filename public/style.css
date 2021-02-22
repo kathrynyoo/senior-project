@@ -67,6 +67,7 @@ nav1 li a:hover {
     text-decoration: none;
 }
 
+/* Jumbotron */
 .jumbotron {
     background-color: #ffffea;
 }
@@ -79,16 +80,24 @@ nav1 li a:hover {
     color: #1d3149;
 }
 
+
+/* Container */
 .container {
     background-color: #ffffea;
 }
 
+/* Body */
 body {
     background-color: #ffffea;
     position: relative;
+}
+
+body h1 {
+    font-family:Lobster;
 
 }
 
+/* Font Formatting*/
 .p1{
     font-family: Georgia, serif;
 }
@@ -97,31 +106,25 @@ body {
     font-family:Lobster;
 }
 
-
 h3{
       font-family: "Cinzel", "serif";
 }
-
 
 #section2, #section1, #section3 {
     text-align:center;
 }
 
-body h1 {
-    font-family:Lobster;
-
-}
-
-
+/* Nav pills */
 ul.nav-pills {
     top: 20px;
     position: absolute;
-  }
+}
 
 div.col-8 div {
     height: 500px;
-  }
+}
 
+/* Cards */
 .card-header{
     background-color: #00ccc9;
     color: #1d3149;
@@ -136,8 +139,7 @@ div.col-8 div {
     color: #ff5e5b;
 }
 
-
-
+/* Table */
 .styled-table {
     border-collapse: collapse;
     margin: 10px 10;
@@ -165,26 +167,24 @@ div.col-8 div {
     color: #1d3149
 }
 
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #00cecb;
+}
+
+/* Carousel Landing Page*/
 .carousel-inner img {
     width: 100%;
     height: 100%;
 
 }
 
+/* About Us Carousel */
 .image-size img {
-    width: 40%;
-    height: 40%;
-
+    max-width: 100%;
 }
 
-.pets{
-    max-width: 80%;
-}
 
-.styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #00cecb;
-}
-
+/* Footer */
 footer {
   text-align: center;
   padding: 3px;
