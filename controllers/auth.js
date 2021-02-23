@@ -24,6 +24,52 @@ const getPets = async function(searchCriteria) {
     }
 }
 
+function sendText(phone, body) {
+    console.log(`sending text to ${phone}`)
+    //make entered phone number into E.164 format
+    var phoneArray = phone.split("-");
+    var formattedPhone = "+1".concat(phoneArray[0]).concat(phoneArray[1]).concat(phoneArray[2]);
+    //send text notification
+    client.messages
+        .create({
+            body: body,
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: formattedPhone
+            })
+            .then(message => console.log(message.sid));
+}
+
+function sendEmail(email, subject, message){
+    console.log(`sending email to ${email}`)
+    //send email notification
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        service: 'gmail',
+        auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+        }
+    });
+                                
+    var link = process.env.SITE_URL
+    var mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: subject,
+        html: message
+    };
+                                
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+        console.log(error);
+        } else {
+        console.log('Email sent: ' + info.response);
+        }
+    });
+}
+
 
 
 const pool = mysql.createPool({
@@ -836,7 +882,7 @@ exports.checkData = (req, res) => {
                 // query SODA API for current search
                 const response = await getPets(searchCriteria);
 
-                if(response.length != 0) {
+                if(response && response.length != 0) {
                     for(const pet in response) {
                         if(prevSearches.includes(response[pet].animal_id) == false) {
                             // Add any new matches to previous matches
@@ -860,97 +906,21 @@ exports.checkData = (req, res) => {
                                 var phone = results[0].phone;
                                 var email = results[0].email;
 
-                                if (notificationType == "both" && phone !== null) {
-                                    //make entered phone number into E.164 format
-                                    var phoneArray = phone.split("-");
-                                    var formattedPhone = "+1".concat(phoneArray[0]).concat(phoneArray[1]).concat(phoneArray[2]);
-                                    var link = process.env.SITE_URL
-                                    //send text notification
-                                    console.log(`Sending text to ${user} at ${phone} for search ${searchName}`);
-                                    // client.messages
-                                    //     .create({
-                                    //         body: `A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! Log in to your account to view the new result(s)! ${link}`,
-                                    //         from: process.env.TWILIO_PHONE_NUMBER,
-                                    //         to: formattedPhone
-                                    //         })
-                                    //         .then(message => console.log(message.sid));
-                    
-                                    //send email notification
-                                    console.log(`emailing ${email} to ${user} for search ${searchName}`)
-                                    // var transporter = nodemailer.createTransport({
-                                    //     host: 'smtp.gmail.com',
-                                    //     port: 465,
-                                    //     secure: true,
-                                    //     service: 'gmail',
-                                    //     auth: {
-                                    //     user: process.env.EMAIL,
-                                    //     pass: process.env.EMAIL_PASSWORD
-                                    //     }
-                                    // });
-                                                                
-                                    // var link = process.env.SITE_URL
-                                    // var mailOptions = {
-                                    //     from: process.env.EMAIL,
-                                    //     to: email,
-                                    //     subject: "New pet matches found!",
-                                    //     html: `
-                                    //         <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log im</a> to your account to view the new result(s)!</h2>
-                                    //         `
-                                    // };
-                                                                
-                                    // transporter.sendMail(mailOptions, function(error, info){
-                                    //     if (error) {
-                                    //     console.log(error);
-                                    //     } else {
-                                    //     console.log('Email sent: ' + info.response);
-                                    //     }
-                                    // });
-                                } else if (notificationType == "email") {
-                                    //send email notification
-                                    console.log(`sending email to ${user} at ${email} for search ${searchName}`)
-                                    // var transporter = nodemailer.createTransport({
-                                    //     host: 'smtp.gmail.com',
-                                    //     port: 465,
-                                    //     secure: true,
-                                    //     service: 'gmail',
-                                    //     auth: {
-                                    //     user: process.env.EMAIL,
-                                    //     pass: process.env.EMAIL_PASSWORD
-                                    //     }
-                                    // });
-                                    
-                                    // var link = process.env.SITE_URL
-                                    // var mailOptions = {
-                                    //     from: process.env.EMAIL,
-                                    //     to: email,
-                                    //     subject: "New pet matches found!",
-                                    //     html: `
-                                    //         <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log im</a> to your account to view the new result(s)!</h2>
-                                    //         `
-                                    // };
-                                    
-                                    // transporter.sendMail(mailOptions, function(error, info){
-                                    //     if (error) {
-                                    //     console.log(error);
-                                    //     } else {
-                                    //     console.log('Email sent: ' + info.response);
-                                    //     }
-                                    // });
-                                } else if (notificationType == "phone" && phone !== null) {
-                                    //make entered phone number into E.164 format
-                                    var phoneArray = phone.split("-");
-                                    var formattedPhone = "+1".concat(phoneArray[0]).concat(phoneArray[1]).concat(phoneArray[2]);
-                                    var link = process.env.SITE_URL
-                                    //send text notification
-                                    console.log(`sending text to ${user} at ${phone} for search ${searchName}`)
-                                    // client.messages
-                                    //     .create({
-                                    //         body: `A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! Log in to your account to view the new result(s)! ${link}`,
-                                    //         from: process.env.TWILIO_PHONE_NUMBER,
-                                    //         to: formattedPhone
-                                    //         })
-                                    //         .then(message => console.log(message.sid));
+                                var link = process.env.SITE_URL
+                                var textBody = `A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! Log in to your account to view the new result(s)! ${link}`
 
+                                var emailSubject = "New matches found!"
+                                var emailMessage = `
+                                    <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log im</a> to your account to view the new result(s)!</h2>
+                                    `
+
+                                if (notificationType == "both" && phone !== null) {
+                                    sendText(phone, textBody)
+                                    sendEmail(email, emailSubject, emailMessage)
+                                } else if (notificationType == "email") {
+                                    sendEmail(email, emailSubject, emailMessage)
+                                } else if (notificationType == "phone" && phone !== null) {
+                                    sendText(phone, textBody)
                                 }
                             }
                         })
