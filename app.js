@@ -1,22 +1,25 @@
 // "npm start" to run
-
+const bcrypt = require('bcryptjs');
 const express = require('express');
 const mysql = require("mysql");
 const dotenv = require('dotenv');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cron = require('node-cron');
+const authController = require('./controllers/auth')
 const uuidv4 = require('uuid')
 const expressValidator = require('express-validator')
+const axios = require('axios');
 
 //environment variables
 dotenv.config({ path: './.env'});
 
 const app = express();
 
+cron.schedule('* * * * *', authController.checkData);
 
-
-const db = mysql.createConnection({
+var db = mysql.createConnection({
     //use ip adress for host when server is used
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,

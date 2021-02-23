@@ -17,6 +17,7 @@
                     {{#if isAdmin}}
                         <li><a href="/adminHome">Admin Panel</a></li>
                     {{/if}}
+                    <li><a href="/savedSearches">My Saved Searches</a></li>
                     <li><a href="/logout">Logout</a></li>
                     {{else}}
                         <li><a href="/requestAccount">Sign Up</a></li>
@@ -48,38 +49,12 @@
                             <p>Color: {{this.color}}</p>
                             <p>Sex: {{this.sex}}</p>
                             <p>Age estimate: {{this.age}}</p>
-                            <a class="button" href="{{this.image.url}}" role="button"><p style="text-align:center">View Pet</p></a>
+                            <a class="button" href="{{this.image.url}}" role="button"><p style="text-align:center">View Pet/More Info</p></a>
 
                         </div>
                     </div>
                 {{/each}}
             </div>
-            {{!-- <table class="table">
-                <thead>
-                    <th scope="col">Animal ID</th>
-                    <th scope="col">At AAC?</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Looks Like</th>
-                    <th scope="col">Color</th>
-                    <th scope="col">Sex</th>
-                    <th scope="col">Age Estimate</th>
-                    <th scope="col">View Pet</th>
-                </thead>
-                <tbody>
-                    {{#each pets}}
-                        <tr>
-                            <td>{{this.animal_id}}</td>
-                            <td>{{this.at_aac}}</td>
-                            <td>{{this.type}}</td>
-                            <td>{{this.looks_like}}</td>
-                            <td>{{this.color}}</td>
-                            <td>{{this.sex}}</td>
-                            <td>{{this.age}}</td>
-                            <td><a class="btn btn-primary" href="{{this.image.url}}" role="button">View Pet</a></td>
-                        </tr>
-                    {{/each}}
-                </tbody>
-            </table> --}}
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>

@@ -28,4 +28,13 @@ router.post('/reverify', authController.reverify)
 //search pets form submission
 router.post('/search', authController.searchPets);
 
+//save specific search
+router.post('/saveSearch', authController.saveSearch);
+
+//delete specific pet search
+router.post('/deleteSearch', authController.deleteSearch);
+
+//stop notifications for a specific pet search
+router.post('/stopNotifications', authController.stopNotifications);
+
 module.exports = router;

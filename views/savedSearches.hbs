@@ -17,7 +17,6 @@
                     {{#if isAdmin}}
                         <li><a href="/adminHome">Admin Panel</a></li>
                     {{/if}}
-                    <li><a href="/savedSearches">My Saved Searches</a></li>
                     <li><a href="/logout">Logout</a></li>
                     {{else}}
                         <li><a href="/requestAccount">Sign Up</a></li>
@@ -37,10 +36,40 @@
 
         <div class="container mt-4 text-center">
             <div class="jumbotron">
-                <h2 class="display-4">Pet Patrol's Mission Statement</h2>
+                <h2 class="display-4">Saved Searches</h2>
                 <hr class="my-4">
-                <p class="text-left"> Here at Pet Patrol, we know that pets are members of the family and we want only the best for our furry (or not so furry) friends. However, we know life happens and sometimes pets can get lost. Our goal is to help reunite lost pets with their families as quickly and easily as possible. Created for and by Austinites, Pet Patrol makes searching the Austin Animal Center's found pets database easier than ever! With an intuitive design and the option to request notifications for new search results, your pet will be back home in no time.</p>
             </div>     
+        </div>
+
+        <div class="container">
+            {{#if message}}
+                <h4 class="alert alert-danger mt-4">{{message}}</h4>
+            {{/if}}
+            <div class="card-columns">
+                {{#each searchCriteria}}
+                    <div class="card">
+                        <div class="card-header">
+                            {{this.searchName}}
+                        </div>
+                        <div class="card-body">
+                            <p>Type: {{this.type}}</p>
+                            <p>Sex like: {{this.sex}}</p>
+                            <p>Age: {{this.age}}</p>
+                            <p>Color(s): {{this.color}}</p>
+                            <p>Breed(s): {{this.breed}}</p>
+                            <form action="/auth/deleteSearch" method="POST">
+                                    <input type="hidden" name="searchId" value={{this.searchId}}>
+                                    <input type="hidden" name="searchName" value={{this.searchName}}>
+                                    <input type="submit" value="Delete Search" style="border-radius: 10px;background-color:#ffffea">
+                            </form>
+                            <form action="/auth/stopNotifications" method="POST">
+                                    <input type="hidden" name="searchId" value={{this.searchId}}>
+                                    <input type="submit" value="Turn notifications off" style="border-radius: 10px;background-color:#ffffea">
+                            </form>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>
