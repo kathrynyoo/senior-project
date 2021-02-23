@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "bulma": "^0.9.1",
     "cookie-parser": "^1.4.5",
@@ -23,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "mysql": "^2.18.1",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.4.13",
     "nodemon": "^2.0.4",
     "soda-js": "^0.2.3",

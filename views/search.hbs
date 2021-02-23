@@ -13,11 +13,11 @@
             <a href="/"><h2>Pet Patrol</h2></a>
             <ul>
                 {{#if user}}
-                    <li><a href="/logout">Logout</a></li>
                     {{#if isAdmin}}
                         <li><a href="/adminHome">Admin Panel</a></li>
                     {{/if}}
-                    
+                        <li><a href="/savedSearches">My Saved Searches</a></li>
+                        <li><a href="/logout">Logout</a></li>
                     {{else}}
                         <li><a href="/requestAccount">Sign Up</a></li>
                         <li><a href="/login">Login</a></li>
@@ -36,7 +36,7 @@
 
         <div class="container mt-4">
             <div class="jumbotron">
-                <h2 class="text-center">Search the Austin Animal Center's found pets data</h2>
+                <h2 class="display-4">Search</h2>
                 <h5>Note: Information entered for found pets is just the best estimate from AAC employees. For fields with multiple options it may be best to select any that may apply to your pet.</h5>
                 <br>
                 <form action="/auth/search" method="POST">

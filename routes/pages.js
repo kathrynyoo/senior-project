@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
         res.render('index');
     } else {
         res.render('index', {
-            user: req.session.userName, isAdmin: req.session.permissions
+            user: req.session.userName, isAdmin: req.session.permissions, userID: req.session.user_id
         });
     }
 });
@@ -29,20 +29,23 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
-//admin home page
-router.get('/adminHome', authController.listUsers);
-
-//request account page
-router.get('/requestAccount', (req, res) => {
-    res.render('requestAccount');
-});
-
 router.get('/auth/login', (req, res) => {
     if(!req.session.userName) {
         res.redirect('/');
     } else {
         res.redirect('/');
     }
+});
+
+//admin home page
+router.get('/adminHome', authController.listUsers);
+
+//saved searches page
+router.get('/savedSearches', authController.listSavedSearches);
+
+//request account page
+router.get('/requestAccount', (req, res) => {
+    res.render('requestAccount');
 });
 
 //verify phone number
@@ -57,7 +60,38 @@ router.get('/search', (req, res) => {
         res.render('search');
     } else {
         res.render('search', {
-            user: req.session.userName, isAdmin: req.session.permissions
+            user: req.session.userName, isAdmin: req.session.permissions, userID: req.session.user_id
+        });
+    }
+})
+
+router.get('/auth/search', (req, res) => {
+    if(!req.session.userName) {
+        res.render('results');
+    } else {
+        res.render('results', {
+            user: req.session.userName, isAdmin: req.session.permissions, userID: req.session.user_id
+        });
+    }
+});
+
+//results page
+router.get('/results', (req, res) => {
+    if(!req.session.userName) {
+        res.render('results');
+    } else {
+        res.render('results', {
+            user: req.session.userName, isAdmin: req.session.permissions, userID: req.session.user_id
+        });
+    }
+});
+
+router.get('/auth/saveSearch', (req, res) => {
+    if(!req.session.userName) {
+        res.render('results');
+    } else {
+        res.render('results', {
+            user: req.session.userName, isAdmin: req.session.permissions, userID: req.session.user_id, search: req.session.search, cleanSearch: req.session.clean_search
         });
     }
 })
