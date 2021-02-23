@@ -36,7 +36,7 @@ function sendText(phone, body) {
             from: process.env.TWILIO_PHONE_NUMBER,
             to: formattedPhone
             })
-            .then(message => console.log(message.sid));
+            .then(message => console.log(`sent text${message.sid}`));
 }
 
 function sendEmail(email, subject, message){
@@ -70,7 +70,37 @@ function sendEmail(email, subject, message){
     });
 }
 
+function newMatchNotify(user, searchName, notificationType){
+    console.log(`new matches found`)
+    // get user phone and email for current search
+    pool.query("SELECT email,phone FROM user WHERE user_id = ?", [user], (error, results) => {
 
+        if(error) {
+            console.log(error)
+        } else {
+            console.log(`Notifications for user #${user}:`)
+            var phone = results[0].phone;
+            var email = results[0].email;
+
+            var link = process.env.SITE_URL
+            var textBody = `A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! Log in to your account to view the new result(s)! ${link}`
+
+            var emailSubject = "New matches found!"
+            var emailMessage = `
+                <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log im</a> to your account to view the new result(s)!</h2>
+                `
+
+            if (notificationType == "both" && phone !== null) {
+                sendText(phone, textBody)
+                sendEmail(email, emailSubject, emailMessage)
+            } else if (notificationType == "email") {
+                sendEmail(email, emailSubject, emailMessage)
+            } else if (notificationType == "phone" && phone !== null) {
+                sendText(phone, textBody)
+            }
+        }
+    })
+}
 
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -856,78 +886,50 @@ exports.checkData = (req, res) => {
             // iterate through each search result
             for (count = 0; count < results.length; count++) {
                 // initiate vars for current search
-                var newMatches = 0;
-                var searchCriteria = results[count].search_query;
-                var searchName = results[count].search_name;
-                var user = results[count].user_id;
-                var notificationType = results[count].notification_type;
-                var prevSearches = [];
+                const searchCriteria = results[count].search_query;
+                const searchName = results[count].search_name;
+                const user = results[count].user_id;
+                const notificationType = results[count].notification_type;
+                
 
                 console.log(`Search #${count+1}: ${searchName} by user ${user}`);
 
                 // select all previous matches for current search
-                pool.query(`SELECT pet_id FROM previousMatches WHERE user_id = ${user} AND search_name = '${searchName}'`, (error, results) => {
+                pool.query(`SELECT pet_id FROM previousMatches WHERE user_id = ${user} AND search_name = '${searchName}'`,async (error, results) => {
                     if(error) {
                         console.log(error);
                     } else {
+                        var newMatches = 0;
+                        var prevSearches = [];
                         var resCount = 0;
                         // add previous searches to array 
                         while(resCount < results.length) {
                             prevSearches.push(results[resCount].pet_id);
                             resCount += 1
                         }
-                    }
-                })
+                        // query SODA API for current search
+                        const response = await getPets(searchCriteria);
 
-                // query SODA API for current search
-                const response = await getPets(searchCriteria);
-
-                if(response && response.length != 0) {
-                    for(const pet in response) {
-                        if(prevSearches.includes(response[pet].animal_id) == false) {
-                            // Add any new matches to previous matches
-                            pool.query("INSERT INTO previousMatches SET ?", {user_id: user, pet_id: response[pet].animal_id, search_name: searchName}, (error, results) => {
-                                if(error) {
-                                    console.log(error)
-                                }
-                            })
-                            newMatches += 1;
-                        }
-                    }
-                    // if there are new matches
-                    if(newMatches > 0) {
-                        console.log(`new matches found`)
-                        // get user phone and email for current search
-                        pool.query("SELECT email,phone FROM user WHERE user_id = ?", [user], (error, results) => {
-                            if(error) {
-                                console.log(error)
-                            } else {
-                                console.log(`Notifications for user #${user}:`)
-                                var phone = results[0].phone;
-                                var email = results[0].email;
-
-                                var link = process.env.SITE_URL
-                                var textBody = `A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! Log in to your account to view the new result(s)! ${link}`
-
-                                var emailSubject = "New matches found!"
-                                var emailMessage = `
-                                    <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log im</a> to your account to view the new result(s)!</h2>
-                                    `
-
-                                if (notificationType == "both" && phone !== null) {
-                                    sendText(phone, textBody)
-                                    sendEmail(email, emailSubject, emailMessage)
-                                } else if (notificationType == "email") {
-                                    sendEmail(email, emailSubject, emailMessage)
-                                } else if (notificationType == "phone" && phone !== null) {
-                                    sendText(phone, textBody)
+                        if(response && response.length != 0) {
+                            for(const pet in response) {
+                                if(prevSearches.includes(response[pet].animal_id) == false) {
+                                    // Add any new matches to previous matches
+                                    pool.query("INSERT INTO previousMatches SET ?", {user_id: user, pet_id: response[pet].animal_id, search_name: searchName}, (error, results) => {
+                                        if(error) {
+                                            console.log(error)
+                                        }
+                                    })
+                                    newMatches += 1;
                                 }
                             }
-                        })
-                    }
+                            // if there are new matches
+                            if(newMatches > 0) {
+                                newMatchNotify(user, searchName, notificationType);
+                            }
 
-                }
-                console.log("next search");
+                        }
+                    }                    
+                })
             }
         }
     })
