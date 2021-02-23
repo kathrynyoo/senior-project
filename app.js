@@ -17,7 +17,7 @@ dotenv.config({ path: './.env'});
 
 const app = express();
 
-cron.schedule('* * * * *', authController.checkData);
+cron.schedule('0,30 * * * *', authController.checkData);
 
 var db = mysql.createConnection({
     //use ip adress for host when server is used
@@ -52,6 +52,7 @@ db.connect( (error) => {
     }
     else {
         console.log("mysql connected");
+        authController.checkData()
     }
 })
 
