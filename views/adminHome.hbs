@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lobster" /> <!-- Adds Lobster Font -->
         <link rel="stylesheet" href="/style.css">
         <title>Pet Patrol</title>
         <link rel="shortcut icon" type="image/png" href="images/dog-paw.png" />
@@ -11,7 +12,7 @@
     </head>
     <body>
         <nav>
-            <a href="/"><h2>Pet Patrol</h2></a>
+            <a href="/"><h1>Pet Patrol</h1></a>
             <ul>
                 {{#if user}}
                     {{#if isAdmin}}
@@ -105,5 +106,30 @@
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
     </body>
+
+    <div class="footer">
+        <div class="row">
+            <div class="col-sm-4">
+                <h5 class="h5"> Pet Patrol </h5>
+
+            </div>
+
+            <div class="col-sm-4">
+                <p>
+                    <a style="color:white" href="/aboutUs">About Us</a>
+                    <a style="color:white" href="/resources">| Resources</a>
+                    <a style="color:white" href="/search">| Search Lost Pets</a>
+                    <a style="color:white" href="/allPets">| View All Pets</a>
+                </p>
+            </div>
+
+            <div class="col-sm-4">
+                <p> Authors: Marcela Rodriguez & Kathryn Reck</p>
+            </div>
+
+        </div>
+    </div>
+
 </html>

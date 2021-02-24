@@ -33,6 +33,7 @@ nav li a {
     text-decoration: none;
     font-weight: bold;
     padding: 5px 8px;
+    font-family:  Georgia, serif;
 }
 
 /* Navbar link text on hover */
@@ -43,7 +44,7 @@ nav li a:hover {
 
 /* Secondary Navbar */
 nav1 {
-    background-color: #00cecb;
+    background-color: #00ccc9;
     color: #00cecb;
     padding: 5px 5px;
     display: flex;
@@ -58,6 +59,7 @@ nav1 li a {
     font-weight: bold;
     padding: 1px 1px;
     font-size: 20px;
+    font-family:  Georgia, serif;
 }
 
 nav1 li a:hover {
@@ -65,6 +67,7 @@ nav1 li a:hover {
     text-decoration: none;
 }
 
+/* Jumbotron */
 .jumbotron {
     background-color: #ffffea;
 }
@@ -77,14 +80,52 @@ nav1 li a:hover {
     color: #1d3149;
 }
 
+
+/* Container */
 .container {
     background-color: #ffffea;
 }
 
+/* Body */
 body {
     background-color: #ffffea;
+    position: relative;
 }
 
+body h1 {
+    font-family:Lobster;
+
+}
+
+/* Font Formatting*/
+.p1{
+    font-family: Georgia, serif;
+}
+
+.h5{
+    font-family:Lobster;
+    color: #ffffea;
+}
+
+h3{
+      font-family: "Cinzel", "serif";
+}
+
+#section2, #section1, #section3 {
+    text-align:center;
+}
+
+/* Nav pills */
+ul.nav-pills {
+    top: 20px;
+    position: absolute;
+}
+
+div.col-8 div {
+    height: 500px;
+}
+
+/* Cards */
 .card-header{
     background-color: #00ccc9;
     color: #1d3149;
@@ -99,6 +140,7 @@ body {
     color: #ff5e5b;
 }
 
+/* Table */
 .styled-table {
     border-collapse: collapse;
     margin: 10px 10;
@@ -126,8 +168,31 @@ body {
     color: #1d3149
 }
 
-
-
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #00cecb;
 }
+
+/* Carousel Landing Page*/
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+
+}
+
+/* About Us Carousel */
+.image-size img {
+    max-width: 100%;
+}
+
+/* footer */
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: #00ccc9;
+   color: #ffffea;
+   text-align: center;
+}
+
+
