@@ -35,28 +35,45 @@
           </ul>
         </nav1>
 
-        <div class="container mt-4">
+        <div class="container">
             <div class="row">
-                <div class="col-6">
+                {{#if isSaved}}
+                <div class="col-12">
                     <div class="text-center">
-                        <h1 class="display-4">{{results}} Search Results</h1>
+                        <h1 class="display-4">{{results}} Search Results for {{searchName}}</h1>
                         <a class="btn btn-primary btn-lg" href="/search" role="button">New Search</a>
                     </div> 
                 </div>
+                {{else}}
+                <div class="col-6">
+                    <div class="text-center">
+                        {{#if saveSuccess}}
+                        <br><br>
+                        <a class="btn btn-primary btn-lg" href="/search" role="button">New Search</a>
+                        {{else}}
+                        <h1 class="display-4">{{results}} Search Results</h1>
+                        <a class="btn btn-primary btn-lg" href="/search" role="button">New Search</a>
+                        {{/if}}
+                    </div> 
+                </div>
+                {{/if}}
                 <div class="col-6">
                     <div>
                         {{#if user}}
                             {{#if saveSuccess}}
+                            <br>
                                 <div class="alert alert-success" role="alert">
                                     {{saveSuccess}}
                                 </div>
-                            {{else}}
+                            {{/if}}
+                            {{#unless dontShowSaveButton}}
                                 <div id="savePrompt">
                                     <h4>Don't see your pet? Save your search to recieve notifications of new potential matches</h4>
                                     <button onclick="showForm('saveForm')">Save Search</button>
                                 </div>
                                 <div id="saveForm" style="display:none">
                                     <form action="/auth/saveSearch" method="POST" style="hidden">
+                                        <input type="hidden" name="cleanSearch" value={{cleanSearch}}>
                                         <div class="form-group col-md-6">
                                             <label for="search_name">Name this search: </label>
                                             <input type="text" class="form-control" id="search_name" name="search_name" required>
@@ -76,27 +93,26 @@
                                         </div>
                                     </form>
                                 </div>    
-                            {{/if}}
+                            {{/unless}}
                             </div>
                             <script type="text/javascript">
                                 function showForm(show_id) {
                                     document.getElementById('savePrompt').innerHTML = document.getElementById(show_id).innerHTML;
                                 }
                             </script>
-                            {{else}}
-                                <h4>Don't see your pet? <a href="/login">Login</a> or <a href="/register">register</a> a new account to save this search and recieve notifications of new potential matches. </h4>
+                        {{else}}
+                            <h4>Don't see your pet? <a href="/login">Login</a> or <a href="/register">register</a> a new account to save this search and recieve notifications of new potential matches. </h4>
                         {{/if}}
                     </div>
                 </div>
             </div>  
             <hr class="my-4">               
-        </div>
 
-        <div class="container">
             {{#if message}}
                 <h4 class="alert alert-danger mt-4">{{message}}</h4>
             {{/if}}
-            <div class="card-columns">
+            <div class="container">
+                <div class="card-columns">
                 {{#each pets}}
                     <div class="card">
                         <div class="card-header">
@@ -114,19 +130,21 @@
                     </div>
                 {{/each}}
             </div>
-        </div> <br/><br/>
+            </div>
+        </div> <br/><br/><br>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
     </body>
 
     <div class="footer">
+        <br>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 <h5 class="h5"> Pet Patrol </h5>
 
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <p>
                     <a style="color:white" href="/aboutUs">About Us</a>
                     <a style="color:white" href="/resources">| Resources</a>

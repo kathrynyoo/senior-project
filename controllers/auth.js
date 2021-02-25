@@ -87,7 +87,7 @@ function newMatchNotify(user, searchName, notificationType){
 
             var emailSubject = "New matches found!"
             var emailMessage = `
-                <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log im</a> to your account to view the new result(s)!</h2>
+                <h2>A new pet matching your search called ${searchName} has been added to the Austin Animal Center database! <a href="${link}/login">Log in</a> to your account to view the new result(s)!</h2>
                 `
 
             if (notificationType == "both" && phone !== null) {
@@ -769,7 +769,7 @@ exports.saveSearch = (req, res) => {
             }
             console.log('success adding to previousMatches');
             return res.render('results', {
-                saveSuccess: "Search saved successfully! Check the 'My Saved Searches' tab to view and edit your saved searches!", user: req.session.userName, isAdmin: req.session.permissions
+                saveSuccess: "Search saved successfully! Check the 'My Saved Searches' tab to view and edit your saved searches!", user: req.session.userName, isAdmin: req.session.permissions, dontShowSaveButton: true
             });
 
         } 
@@ -794,6 +794,14 @@ exports.listSavedSearches = (req, res) => {
             });
         }
         else {
+            Handlebars.registerHelper('notificationsOn', function (aStr) {
+                if (aStr !== "none") {
+                    return true
+                }
+                else {
+                    return false
+                }
+            });
 
             //format data into a dictionary with searchId, sex, type, age, color(s), breed(s)
             var cleanSearchArr = []
@@ -818,9 +826,8 @@ exports.listSavedSearches = (req, res) => {
                 } else {
                     var breeds = chunks[chunks.length-1];
                 }
-                var cleanSearchDict = {searchId: results[count].search_id, searchName: results[count].search_name, sex: chunks[0], type: chunks[1], age: chunks[2], color: colors, breed: breeds}
+                var cleanSearchDict = {notificationType: results[count].notification_type, searchId: results[count].search_id, searchName: results[count].search_name, sex: chunks[0], type: chunks[1], age: chunks[2], color: colors, breed: breeds}
                 
-                //console.log(`cleanSearchDict: ${cleanSearchDict}`);
                 cleanSearchArr.push(cleanSearchDict);
                 count = count + 1
             }
@@ -870,6 +877,27 @@ exports.stopNotifications = (req, res) => {
         }
 
     })
+}
+
+// view current results for a search
+exports.currentMatches = (req, res) => {
+    searchId = req.body.searchId;
+    searchName = req.body.searchName;
+
+    pool.query("SELECT * FROM petSearch WHERE search_id = ?", [searchId], async (error, results) => {
+        if(error) {
+            console.log(error)
+        } else {
+            const queryString = results[0].search_query;
+
+            const response = await getPets(queryString);
+
+            return res.render('results', {
+                pets: response, userID: req.session.userID, user: req.session.userName, isAdmin: req.session.permissions, results: response.length, isSaved: true, searchName: searchName, dontShowSaveButton: true
+            })
+        }
+    })
+    
 }
 
 // ------------ AUTOMATIC FUNCTIONS AND HELPERS ------------ 

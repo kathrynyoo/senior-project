@@ -37,4 +37,7 @@ router.post('/deleteSearch', authController.deleteSearch);
 //stop notifications for a specific pet search
 router.post('/stopNotifications', authController.stopNotifications);
 
+//view current matches for a saved search
+router.post('/currentMatches', authController.currentMatches);
+
 module.exports = router;
