@@ -40,7 +40,6 @@
                 <hr class="my-4">
             </div>     
         </div>
-
         <div class="container">
             {{#if message}}
                 <h4 class="alert alert-danger mt-4">{{message}}</h4>
@@ -50,6 +49,14 @@
                     <div class="card">
                         <div class="card-header">
                             {{this.searchName}}
+                            <br>
+                            Notifications: {{this.notificationType}}
+                            <br>
+                            <form action="/auth/currentMatches" method="POST">
+                                    <input type="hidden" name="searchId" value={{this.searchId}}>
+                                    <input type="hidden" name="searchName" value={{this.searchName}}>
+                                    <input type="submit" value="View Current Matches" style="border-radius: 10px;background-color:#ffffea">
+                            </form>
                         </div>
                         <div class="card-body">
                             <p>Type: {{this.type}}</p>
@@ -62,26 +69,31 @@
                                     <input type="hidden" name="searchName" value={{this.searchName}}>
                                     <input type="submit" value="Delete Search" style="border-radius: 10px;background-color:#ffffea">
                             </form>
+                            <br>
+                            {{#if (notificationsOn this.notificationType)}}
                             <form action="/auth/stopNotifications" method="POST">
                                     <input type="hidden" name="searchId" value={{this.searchId}}>
                                     <input type="submit" value="Turn notifications off" style="border-radius: 10px;background-color:#ffffea">
                             </form>
+                            {{/if}}
                         </div>
                     </div>
                 {{/each}}
             </div>
         </div>
+        <br><br><br>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     </body>
 
     <div class="footer">
+        <br>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 <h5 class="h5"> Pet Patrol </h5>
 
             </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <p>
                     <a style="color:white" href="/aboutUs">About Us</a>
                     <a style="color:white" href="/resources">| Resources</a>

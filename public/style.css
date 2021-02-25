@@ -8,12 +8,22 @@ nav {
     min-height: 30px;
 }
 
+nav a.navbar-brand h1{
+    color: #ffffea;
+    font-size: 50px;
+}
+
+nav a.navbar-brand h1:hover {
+    color: #ff5e5b;
+}
+
 nav a {
     color: #ffffea;
+    font-size: 20px;
 }
 
 nav a:hover {
-    color: #ffffea;
+    color: #ff5e5b;
     text-decoration: none;
 }
 
@@ -186,13 +196,11 @@ div.col-8 div {
 
 /* footer */
 .footer {
-   position: fixed;
    left: 0;
    bottom: 0;
    width: 100%;
    background-color: #00ccc9;
    color: #ffffea;
    text-align: center;
+   position: fixed;
 }
-
-
