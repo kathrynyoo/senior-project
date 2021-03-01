@@ -665,10 +665,10 @@ exports.searchPets = (req, res) => {
     if(!Array.isArray(formBreed)){
         if (typeof formBreed === 'undefined') {
             var looks_like = "looks_like like '%25'";
-            cleanSearch = cleanSearch.concat('not specified')
+            cleanSearch = cleanSearch.concat('*not specified')
         } else {
             var looks_like = `looks_like like '%25${formBreed}%25'`;
-            cleanSearch = cleanSearch.concat(`${formBreed}`)
+            cleanSearch = cleanSearch.concat(`*${formBreed}`)
         }
     } else {
         var i;
