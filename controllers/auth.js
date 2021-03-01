@@ -599,50 +599,50 @@ exports.searchPets = (req, res) => {
     var cleanSearch = `${formSex}*${formType}*${formAge}*`
 
     // Age query expressions
-    if(formAge === "0 to 11 months") {
-        var age = "age like '%25weeks' or age like '%25month%25' or age = 'NULL'";
-    } else if (formAge === "1 year to 4 years") {
-        var age = "age = '1 year' or age = '2 years' or age = '3 years' or age = '4 years' or age = 'NULL'";
-    } else if (formAge === "5 years to 9 years") {
-        var age = "age like '5 year' or age like '6 years' or age like '7 years' or age like '8 years' or age like '9 years' or age like 'NULL'";
-    } else if (formAge === "10+ years") {
-        var age = "age like '1% years' or age like 'NULL'";
-    } else if (formAge === "Choose...") {
+    if(formAge == "0 to 11 months") {
+        var age = "(age like '%25weeks' or age like '%25months')";
+    } else if (formAge == "1 year to 4 years") {
+        var age = "(age = '1 year' or age = '2 years' or age = '3 years' or age = '4 years')";
+    } else if (formAge == "5 years to 9 years") {
+        var age = "(age like '5 year' or age like '6 years' or age like '7 years' or age like '8 years' or age like '9 years')";
+    } else if (formAge == "10+ years") {
+        var age = "age like '1% years'";
+    } else if (formAge == "Choose...") {
         var age = "age like '%25'";
     }
 
     // Sex query expressions
-    if(formSex === "Intact Female") {
+    if(formSex == "Intact Female") {
         var sex = "sex = 'Intact Female'";
-    } else if(formSex === "Spayed Female") {
+    } else if(formSex == "Spayed Female") {
         var sex = "sex = 'Spayed Female'";
-    } else if(formSex === "Intact Male") {
+    } else if(formSex == "Intact Male") {
         var sex = "sex = 'Intact Male'";
-    } else if(formSex === "Neutered Male") {
+    } else if(formSex == "Neutered Male") {
         var sex = "sex = 'Neutered Male'";
-    } else if(formSex === "Unknown" || formSex === "Choose...") {
+    } else if(formSex == "Unknown" || formSex == "Choose...") {
         var sex = "sex like '%25'";
     }
     
     // Type query expressions
-    if(formType === "Dog") {
+    if(formType == "Dog") {
         var type = "type = 'Dog'";
-    } else if(formType === "Cat") {
+    } else if(formType == "Cat") {
         var type = "type = 'Cat'";
-    } else if(formType === "Other") {
+    } else if(formType == "Other") {
         var type = "type = 'Other'";
-    } else if(formType === "Choose...") {
+    } else if(formType == "Choose...") {
         var type = "type like '%25'";
     }
 
 
     // Color query expressions
     if(!Array.isArray(formColor)){
-        if (typeof formColor === 'undefined') {
+        if (typeof formColor == 'undefined') {
             var color = "color like '%25'";
             cleanSearch = cleanSearch.concat('not specified*')
         } else {
-            var color = `color = '${formColor}'`;
+            var color = `color like '%25${formColor}%25'`;
             cleanSearch = cleanSearch.concat(`${formColor}*`)
         }
     } else {
@@ -650,7 +650,7 @@ exports.searchPets = (req, res) => {
         var color = "";
         for (i = 0; i < formColor.length; i++) {
             if (i === 0) {
-                var str = `color like '%25${formColor[i]}%25'`;
+                var str = `(color like '%25${formColor[i]}%25'`;
                 var color = color.concat(str);
                 cleanSearch = cleanSearch.concat(`${formColor[i]}`)
             } else {
@@ -659,11 +659,12 @@ exports.searchPets = (req, res) => {
                 cleanSearch = cleanSearch.concat(`@${formColor[i]}`)
             }
         }
+        var color = color.concat(`)`)
     }
 
     // Breed query expressions
     if(!Array.isArray(formBreed)){
-        if (typeof formBreed === 'undefined') {
+        if (typeof formBreed == 'undefined') {
             var looks_like = "looks_like like '%25'";
             cleanSearch = cleanSearch.concat('*not specified')
         } else {
@@ -675,7 +676,7 @@ exports.searchPets = (req, res) => {
         var looks_like = "";
         for (i = 0; i < formBreed.length; i++) {
             if (i === 0) {
-                var str = `looks_like like '%25${formBreed[i]}%25'`;
+                var str = `(looks_like like '%25${formBreed[i]}%25'`;
                 var looks_like = looks_like.concat(str);
                 cleanSearch = cleanSearch.concat(`*${formBreed[i]}`)
             } else {
@@ -684,10 +685,13 @@ exports.searchPets = (req, res) => {
                 cleanSearch = cleanSearch.concat(`@${formBreed[i]}`)
             }
         }
+        var looks_like = looks_like.concat(`)`)
     }
     
     //put search expressions into string for querying SODA API
     var query_str = `https://data.austintexas.gov/resource/hye6-gvq2.json?$where=${type} AND ${color} AND ${age} AND ${looks_like} AND ${sex}`
+
+    console.log(query_str);
 
     axios.get(query_str)
         .then(function (response) {
