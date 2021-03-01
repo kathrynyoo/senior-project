@@ -600,9 +600,9 @@ exports.searchPets = (req, res) => {
 
     // Age query expressions
     if(formAge === "0 to 11 months") {
-        var age = "age like '%weeks' or age like '%month%' or age like 'NULL'";
+        var age = "age like '%25weeks' or age like '%25month%25' or age = 'NULL'";
     } else if (formAge === "1 year to 4 years") {
-        var age = "age like '1 year' or age like '2 years' or age like '3 years' or age like '4 years' or age like 'NULL'";
+        var age = "age = '1 year' or age = '2 years' or age = '3 years' or age = '4 years' or age = 'NULL'";
     } else if (formAge === "5 years to 9 years") {
         var age = "age like '5 year' or age like '6 years' or age like '7 years' or age like '8 years' or age like '9 years' or age like 'NULL'";
     } else if (formAge === "10+ years") {
@@ -613,24 +613,24 @@ exports.searchPets = (req, res) => {
 
     // Sex query expressions
     if(formSex === "Intact Female") {
-        var sex = "sex like 'Intact Female'";
+        var sex = "sex = 'Intact Female'";
     } else if(formSex === "Spayed Female") {
-        var sex = "sex like 'Spayed Female'";
+        var sex = "sex = 'Spayed Female'";
     } else if(formSex === "Intact Male") {
-        var sex = "sex like 'Intact Male'";
+        var sex = "sex = 'Intact Male'";
     } else if(formSex === "Neutered Male") {
-        var sex = "sex like 'Neutered Male'";
+        var sex = "sex = 'Neutered Male'";
     } else if(formSex === "Unknown" || formSex === "Choose...") {
         var sex = "sex like '%25'";
     }
     
     // Type query expressions
     if(formType === "Dog") {
-        var type = "type like 'Dog'";
+        var type = "type = 'Dog'";
     } else if(formType === "Cat") {
-        var type = "type like 'Cat'";
+        var type = "type = 'Cat'";
     } else if(formType === "Other") {
-        var type = "type like 'Other'";
+        var type = "type = 'Other'";
     } else if(formType === "Choose...") {
         var type = "type like '%25'";
     }
@@ -642,7 +642,7 @@ exports.searchPets = (req, res) => {
             var color = "color like '%25'";
             cleanSearch = cleanSearch.concat('not specified*')
         } else {
-            var color = `color like '%25${formColor}%25'`;
+            var color = `color = '${formColor}'`;
             cleanSearch = cleanSearch.concat(`${formColor}*`)
         }
     } else {
@@ -686,10 +686,8 @@ exports.searchPets = (req, res) => {
         }
     }
     
-    //put search expressions into string seperated by +
+    //put search expressions into string for querying SODA API
     var query_str = `https://data.austintexas.gov/resource/hye6-gvq2.json?$where=${type} AND ${color} AND ${age} AND ${looks_like} AND ${sex}`
-
-    //var consumer = new soda.Consumer('data.austintexas.gov');
 
     axios.get(query_str)
         .then(function (response) {
@@ -720,7 +718,6 @@ exports.searchPets = (req, res) => {
                 message: "No pets were found matching the description provided. Try widening the search criteria for color(s) and or breed(s) to get more results.", userID: req.session.userID, user: req.session.userName, isAdmin: req.session.permissions
             })
         })
-    
 }
 
 

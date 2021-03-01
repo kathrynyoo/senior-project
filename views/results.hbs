@@ -48,7 +48,11 @@
                 <div class="col-6">
                     <div class="text-center">
                         {{#if saveSuccess}}
-                        <br><br>
+                        <br>
+                        <div class="alert alert-success" role="alert">
+                                {{saveSuccess}}
+                        </div>
+                        <br>
                         <a class="btn btn-primary btn-lg" href="/search" role="button">New Search</a>
                         {{else}}
                         <h1 class="display-4">{{results}} Search Results</h1>
@@ -60,12 +64,6 @@
                 <div class="col-6">
                     <div>
                         {{#if user}}
-                            {{#if saveSuccess}}
-                            <br>
-                                <div class="alert alert-success" role="alert">
-                                    {{saveSuccess}}
-                                </div>
-                            {{/if}}
                             {{#unless dontShowSaveButton}}
                                 <div id="savePrompt">
                                     <h4>Don't see your pet? Save your search to recieve notifications of new potential matches</h4>
@@ -101,6 +99,7 @@
                                 }
                             </script>
                         {{else}}
+                            <br>
                             <h4>Don't see your pet? <a href="/login">Login</a> or <a href="/register">register</a> a new account to save this search and recieve notifications of new potential matches. </h4>
                         {{/if}}
                     </div>
