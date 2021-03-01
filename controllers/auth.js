@@ -692,8 +692,11 @@ exports.searchPets = (req, res) => {
     axios.get(query_str)
         .then(function (response) {
             if (response.data.length === 0) {
+                req.session.search = query_str;
+                req.session.clean_search = cleanSearch;
+
                 return res.render('results', {
-                    message: "No pets were found matching the description provided. Try widening the search criteria for color(s) and or breed(s) to get more results.", userID: req.session.userID, user: req.session.userName, isAdmin: req.session.permissions
+                    message: "No pets were found matching the description provided. Try widening the search criteria for color(s) and or breed(s) to get more results.", userID: req.session.userID, user: req.session.userName, isAdmin: req.session.permissions, results: response.data.length, cleanSearch: req.session.clean_search, search: req.session.search
                 }) 
             } else {
                 req.session.search = query_str;
@@ -729,7 +732,7 @@ exports.saveSearch = (req, res) => {
     //get data from save search form 
     var searchName = req.body.search_name;
     var searchString = req.session.search;
-    var cleanSearch = req.session.clean_search
+    var cleanSearch = req.session.clean_search;
     var notificationPreferenceForm = req.body.notifications;
     var userID = req.session.user_id;
     var petIds = req.session.result_ids
